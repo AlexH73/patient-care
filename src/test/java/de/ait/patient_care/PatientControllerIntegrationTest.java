@@ -1,37 +1,36 @@
 package de.ait.patient_care;
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.ait.patient_care.entity.Patient;
+import de.ait.patient_care.enums.BloodType;
+import de.ait.patient_care.enums.Gender;
 import de.ait.patient_care.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import tools.jackson.databind.ObjectMapper;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-class PatientControllerIntegrationTest {
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-    @LocalServerPort
-    private int port;
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class PatientControllerMockMvcTest {
 
     @Autowired
-    private PatientRepository patientRepository;
+    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    private WebTestClient client(WebTestClient.Builder builder) {
-        return builder.baseUrl("http://localhost:" + port).build();
-    }
-
     @Autowired
-    private WebTestClient.Builder webClientBuilder;
+    private PatientRepository patientRepository;
 
     @Test
     void createPatient_success_shouldReturn201() throws Exception {
@@ -40,18 +39,14 @@ class PatientControllerIntegrationTest {
         patient.setLastName("Smith");
         patient.setDateOfBirth(LocalDate.of(1985, 5, 10));
         patient.setGender(Gender.FEMALE);
-        patient.setBloodType(BloodType.O_POSITIVE);
+        patient.setBloodType(BloodType.O_POS);
         patient.setInsuranceNumber("999999");
 
-        client(webClientBuilder)
-                .post()
-                .uri("/api/patients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(objectMapper.writeValueAsString(patient))
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody()
-                .jsonPath("$.firstName").isEqualTo("Anna");
+        mockMvc.perform(post("/api/patients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(patient)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.firstName").value("Anna"));
     }
 
     @Test
@@ -61,16 +56,13 @@ class PatientControllerIntegrationTest {
         invalid.setLastName("Smith");
         invalid.setDateOfBirth(LocalDate.of(1985, 5, 10));
         invalid.setGender(Gender.FEMALE);
-        invalid.setBloodType(BloodType.O_POSITIVE);
+        invalid.setBloodType(BloodType.O_POS);
         invalid.setInsuranceNumber("999999");
 
-        client(webClientBuilder)
-                .post()
-                .uri("/api/patients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(objectMapper.writeValueAsString(invalid))
-                .exchange()
-                .expectStatus().isBadRequest();
+        mockMvc.perform(post("/api/patients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalid)))
+                .andExpect(status().isBadRequest());
     }
 }
 
