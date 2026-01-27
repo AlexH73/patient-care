@@ -1,6 +1,7 @@
 package de.ait;
 
 
+import de.ait.patient_care.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
