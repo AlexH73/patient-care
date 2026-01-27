@@ -54,3 +54,4 @@ public class Patient {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }
+

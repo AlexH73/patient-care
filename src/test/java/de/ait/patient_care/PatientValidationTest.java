@@ -1,5 +1,8 @@
 package de.ait.patient_care;
 
+import de.ait.patient_care.entity.Patient;
+import de.ait.patient_care.enums.BloodType;
+import de.ait.patient_care.enums.Gender;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -29,7 +32,7 @@ class PatientValidationTest {
         patient.setLastName("Doe");
         patient.setDateOfBirth(LocalDate.of(1990, 1, 1));
         patient.setGender(Gender.MALE);
-        patient.setBloodType(BloodType.A_POSITIVE);
+        patient.setBloodType(BloodType.A_POS);
         patient.setInsuranceNumber("123456");
 
         Set<ConstraintViolation<Patient>> violations = validator.validate(patient);
@@ -44,7 +47,7 @@ class PatientValidationTest {
         patient.setLastName("Doe");
         patient.setDateOfBirth(LocalDate.of(1990, 1, 1));
         patient.setGender(Gender.MALE);
-        patient.setBloodType(BloodType.A_POSITIVE);
+        patient.setBloodType(BloodType.A_POS);
         patient.setInsuranceNumber("123456");
 
         Set<ConstraintViolation<Patient>> violations = validator.validate(patient);

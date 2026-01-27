@@ -2,6 +2,8 @@ package de.ait.patient_care.controller;
 
 
 import de.ait.patient_care.entity.Patient;
+import de.ait.patient_care.enums.BloodType;
+import de.ait.patient_care.enums.Gender;
 import de.ait.patient_care.repository.PatientRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -77,7 +79,7 @@ public class PatientController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody Patient updated) {
         Optional<Patient> optional = patientRepository.findById(id);
-        if (optional.isEmpty() || optional.get().isDeleted()) {
+        if (optional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -106,7 +108,7 @@ public class PatientController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<Patient> optional = patientRepository.findById(id);
-        if (optional.isEmpty() || optional.get().isDeleted()) {
+        if (optional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
