@@ -1,4 +1,10 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
     <changeSet id="001-create-patients-table" author="TetianaAnufriieva">
         <createTable tableName="patients">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -17,14 +23,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="insurance_number" type="VARCHAR(50)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="blood_type" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="created_at" type="TIMESTAMP"/>
             <column name="deleted" type="BOOLEAN" defaultValueBoolean="false"/>
         </createTable>
     </changeSet>

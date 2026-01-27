@@ -1,10 +1,10 @@
 package de.ait.patient_care;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.ait.patient_care.entity.Patient;
-import de.ait.patient_care.enums.BloodType;
-import de.ait.patient_care.enums.Gender;
-import de.ait.patient_care.repository.PatientRepository;
+import de.ait.patientcare.entity.Patient;
+import de.ait.patientcare.entity.BloodType;
+import de.ait.patientcare.entity.Gender;
+import de.ait.patientcare.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
