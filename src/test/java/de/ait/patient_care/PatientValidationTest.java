@@ -1,4 +1,4 @@
-package de.ait;
+package de.ait.patient_care;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

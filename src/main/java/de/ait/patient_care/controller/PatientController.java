@@ -1,9 +1,8 @@
 package de.ait.patient_care.controller;
 
-import de.ait.entity.Patient;
-import de.ait.enums.BloodType;
-import de.ait.enums.Gender;
-import de.ait.repository.PatientRepository;
+
+import de.ait.patient_care.entity.Patient;
+import de.ait.patient_care.repository.PatientRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

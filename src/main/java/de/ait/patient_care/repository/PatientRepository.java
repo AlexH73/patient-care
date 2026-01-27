@@ -1,8 +1,9 @@
 package de.ait.patient_care.repository;
 
-import org.springframework.http.ResponseEntity;
+import de.ait.patient_care.entity.Patient;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * ----------------------------------------------------------------------------
@@ -13,8 +14,7 @@ import java.util.List;
  */
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    List<Patient> findById(Long id);
+    Optional<Patient> findById(Long id);
 
-    List<Patient>
 
 }
