@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+    <changeSet id="002-seed-test-data" author="TetianaAnufriieva"  context="test">
+        <insert tableName="patients">
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+            <column name="date_of_birth" value="1985-06-15"/>
+            <column name="gender" value="MALE"/>
+            <column name="insurance_number" value="M8506151234"/>
+            <column name="blood_type" value="O_POS"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+        <insert tableName="patients">
+            <column name="first_name" value="Jane"/>
+            <column name="last_name" value="Smith"/>
+            <column name="date_of_birth" value="1990-03-20"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="insurance_number" value="F9003205678"/>
+            <column name="blood_type" value="A_POS"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
