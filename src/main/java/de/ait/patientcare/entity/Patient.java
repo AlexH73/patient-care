@@ -1,5 +1,7 @@
 package de.ait.patientcare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.ait.patientcare.entity.enums.BloodType;
 import de.ait.patientcare.entity.enums.Gender;
 import jakarta.persistence.*;
@@ -27,6 +29,7 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "First name is mandatory")
@@ -58,12 +61,15 @@ public class Patient {
 
     @CreationTimestamp
     @Column(updatable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 
     @Version
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long version = 0L;
 
     @Builder.Default
+    @JsonIgnore
     private boolean deleted = false;
 }
