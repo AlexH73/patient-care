@@ -91,8 +91,8 @@ public class PatientService {
                 gender, bloodType, ageFrom, ageTo);
 
         LocalDate today = LocalDate.now();
-        LocalDate birthBefore = (ageTo != null) ? today.minusYears(ageTo) : null;
-        LocalDate birthAfter = (ageFrom != null) ? today.minusYears(ageFrom) : null;
+        LocalDate birthBefore = (ageFrom != null) ? today.minusYears(ageFrom) : null;
+        LocalDate birthAfter = (ageTo != null) ? today.minusYears(ageTo) : null;
 
         return patientRepository.search(gender, bloodType, birthBefore, birthAfter);
     }

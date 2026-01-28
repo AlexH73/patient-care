@@ -40,7 +40,8 @@ public interface PatientRepository
             "AND (:gender IS NULL OR p.gender = :gender) " +
             "AND (:bloodType IS NULL OR p.bloodType = :bloodType) " +
             "AND (:birthBefore IS NULL OR p.dateOfBirth <= :birthBefore) " +
-            "AND (:birthAfter IS NULL OR p.dateOfBirth >= :birthAfter)")
+            "AND (:birthAfter IS NULL OR p.dateOfBirth >= :birthAfter)" +
+            "ORDER BY p.lastName, p.firstName")
     List<Patient> search(@Param("gender") Gender gender,
                          @Param("bloodType") BloodType bloodType,
                          @Param("birthBefore") LocalDate birthBefore,
