@@ -1,14 +1,15 @@
 # PatientCare - Medical Patient Management System
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) ![Java](https://img.shields.io/badge/Java-21-orange?style=flat&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.2-brightgreen?style=flat&logo=springboot&logoColor=white)
-![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3.2.2-blue?style=flat&logo=spring&logoColor=white)
-![H2 Database](https://img.shields.io/badge/H2%20Database-2.2.224-red?style=flat&logo=h2&logoColor=white)
-![Liquibase](https://img.shields.io/badge/Liquibase-4.24.0-blue?style=flat&logo=liquibase&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-24.0+-blue?style=flat&logo=docker&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-3.9+-blue?style=flat&logo=apachemaven&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-2.3.0-green?style=flat&logo=swagger&logoColor=white)
-![License](https://img.shields.io/badge/License-Educational-yellow?style=flat)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md) [![Java](https://img.shields.io/badge/Java-21-orange?style=flat&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.2-brightgreen?style=flat&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Data JPA](https://img.shields.io/badge/Spring%20Data%20JPA-3.2.2-blue?style=flat&logo=spring&logoColor=white)](https://spring.io/projects/spring-data-jpa)
+[![H2 Database](https://img.shields.io/badge/H2%20Database-2.2.224-red?style=flat&logo=h2&logoColor=white)](https://www.h2database.com/)
+[![Liquibase](https://img.shields.io/badge/Liquibase-4.24.0-blue?style=flat&logo=liquibase&logoColor=white)](https://www.liquibase.com/)
+[![Docker](https://img.shields.io/badge/Docker-24.0+-blue?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Maven](https://img.shields.io/badge/Maven-3.9+-blue?style=flat&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Lombok](https://img.shields.io/badge/Lombok-1.18.30-red?style=flat&logo=lombok&logoColor=white)](https://projectlombok.org/)
+[![Swagger](https://img.shields.io/badge/Swagger-2.3.0-green?style=flat&logo=swagger&logoColor=white)](https://swagger.io/)
+
 
 ## 📋 Project Overview
 PatientCare is a backend medical service prototype for managing patient records in a private clinic. It provides a RESTful API for patient CRUD operations, search, filtering, and statistics. Developed as part of AIT Trimester 2 coursework.
