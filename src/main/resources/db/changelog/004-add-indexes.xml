@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="add-indexes" author="Alexander Hermann">
+        <comment>Add indexes for better query performance</comment>
+
+        <!-- Уникальный индекс для номера страховки (уже есть constraint, но явно добавляем) -->
+        <createIndex indexName="idx_patients_insurance_number" tableName="patients">
+            <column name="insurance_number"/>
+        </createIndex>
+
+        <!-- Индекс для поиска по ФИО -->
+        <createIndex indexName="idx_patients_name" tableName="patients">
+            <column name="last_name"/>
+            <column name="first_name"/>
+        </createIndex>
+
+        <!-- Индекс для поиска по полу -->
+        <createIndex indexName="idx_patients_gender" tableName="patients">
+            <column name="gender"/>
+        </createIndex>
+
+        <!-- Индекс для поиска по группе крови -->
+        <createIndex indexName="idx_patients_blood_type" tableName="patients">
+            <column name="blood_type"/>
+        </createIndex>
+
+        <!-- Индекс для фильтрации по возрасту -->
+        <createIndex indexName="idx_patients_date_of_birth" tableName="patients">
+            <column name="date_of_birth"/>
+        </createIndex>
+
+        <!-- Индекс для фильтрации удаленных записей -->
+        <createIndex indexName="idx_patients_deleted" tableName="patients">
+            <column name="deleted"/>
+        </createIndex>
+
+        <!-- Композитный индекс для частого запроса: пол + дата рождения -->
+        <createIndex indexName="idx_patients_gender_dob" tableName="patients">
+            <column name="gender"/>
+            <column name="date_of_birth"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>
