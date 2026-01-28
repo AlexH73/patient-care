@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @SQLDelete(sql = "UPDATE patients SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
 public class Patient {
