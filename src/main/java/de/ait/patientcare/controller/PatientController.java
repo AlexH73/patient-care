@@ -27,7 +27,7 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    @Value("${app.clinic.name:PatientCare Clinic}")
+    @Value("${app.clinic.name:Patient Care Clinic}")
     private String clinicName;
 
     @GetMapping("/info")
