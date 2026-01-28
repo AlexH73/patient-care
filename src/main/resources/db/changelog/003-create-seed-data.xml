@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="insert-test-patients" author="Alexander Hermann">
+        <comment>Seed test patients for integration testing</comment>
+
+        <!-- Пациент 1: Молодой мужчина -->
+        <insert tableName="patients">
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Smith"/>
+            <column name="date_of_birth" value="1995-06-15"/>
+            <column name="gender" value="MALE"/>
+            <column name="insurance_number" value="INS00123456"/>
+            <column name="blood_type" value="O_POS"/>
+            <column name="created_at" value="2024-01-01T10:00:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 2: Женщина средних лет -->
+        <insert tableName="patients">
+            <column name="first_name" value="Maria"/>
+            <column name="last_name" value="Garcia"/>
+            <column name="date_of_birth" value="1985-03-22"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="insurance_number" value="INS00234567"/>
+            <column name="blood_type" value="A_POS"/>
+            <column name="created_at" value="2024-01-02T11:30:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 3: Пожилой мужчина -->
+        <insert tableName="patients">
+            <column name="first_name" value="Robert"/>
+            <column name="last_name" value="Johnson"/>
+            <column name="date_of_birth" value="1950-11-30"/>
+            <column name="gender" value="MALE"/>
+            <column name="insurance_number" value="INS00345678"/>
+            <column name="blood_type" value="B_NEG"/>
+            <column name="created_at" value="2024-01-03T14:15:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 4: Молодая женщина -->
+        <insert tableName="patients">
+            <column name="first_name" value="Sophia"/>
+            <column name="last_name" value="Chen"/>
+            <column name="date_of_birth" value="2000-08-10"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="insurance_number" value="INS00456789"/>
+            <column name="blood_type" value="AB_POS"/>
+            <column name="created_at" value="2024-01-04T09:45:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 5: Пациент с OTHER гендером -->
+        <insert tableName="patients">
+            <column name="first_name" value="Alex"/>
+            <column name="last_name" value="Taylor"/>
+            <column name="date_of_birth" value="1990-05-18"/>
+            <column name="gender" value="OTHER"/>
+            <column name="insurance_number" value="INS00567890"/>
+            <column name="blood_type" value="O_NEG"/>
+            <column name="created_at" value="2024-01-05T16:20:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 6: Ребенок -->
+        <insert tableName="patients">
+            <column name="first_name" value="Liam"/>
+            <column name="last_name" value="Brown"/>
+            <column name="date_of_birth" value="2018-12-05"/>
+            <column name="gender" value="MALE"/>
+            <column name="insurance_number" value="INS00678901"/>
+            <column name="blood_type" value="A_NEG"/>
+            <column name="created_at" value="2024-01-06T13:10:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 7: Пожилая женщина -->
+        <insert tableName="patients">
+            <column name="first_name" value="Margaret"/>
+            <column name="last_name" value="Williams"/>
+            <column name="date_of_birth" value="1945-07-20"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="insurance_number" value="INS00789012"/>
+            <column name="blood_type" value="B_POS"/>
+            <column name="created_at" value="2024-01-07T08:30:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 8: Удаленный пациент (soft-delete) -->
+        <insert tableName="patients">
+            <column name="first_name" value="Thomas"/>
+            <column name="last_name" value="Davis"/>
+            <column name="date_of_birth" value="1978-09-12"/>
+            <column name="gender" value="MALE"/>
+            <column name="insurance_number" value="INS00890123"/>
+            <column name="blood_type" value="AB_NEG"/>
+            <column name="created_at" value="2024-01-08T12:00:00"/>
+            <column name="deleted" valueBoolean="true"/>
+        </insert>
+
+        <!-- Пациент 9: Для тестирования поиска по age range -->
+        <insert tableName="patients">
+            <column name="first_name" value="Emma"/>
+            <column name="last_name" value="Wilson"/>
+            <column name="date_of_birth" value="1992-04-25"/>
+            <column name="gender" value="FEMALE"/>
+            <column name="insurance_number" value="INS00901234"/>
+            <column name="blood_type" value="O_POS"/>
+            <column name="created_at" value="2024-01-09T15:45:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+        <!-- Пациент 10: Еще один мужчина для разнообразия -->
+        <insert tableName="patients">
+            <column name="first_name" value="James"/>
+            <column name="last_name" value="Miller"/>
+            <column name="date_of_birth" value="1982-02-14"/>
+            <column name="gender" value="MALE"/>
+            <column name="insurance_number" value="INS01012345"/>
+            <column name="blood_type" value="A_POS"/>
+            <column name="created_at" value="2024-01-10T17:30:00"/>
+            <column name="deleted" valueBoolean="false"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

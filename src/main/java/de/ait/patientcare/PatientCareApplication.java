@@ -1,4 +1,4 @@
-package de.ait.patient_care;
+package de.ait.patientcare;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
