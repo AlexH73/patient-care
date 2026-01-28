@@ -32,6 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 /data/
-*/logs/
+/logs/
 *.log
 *.db
+/logs/.gitkeep
