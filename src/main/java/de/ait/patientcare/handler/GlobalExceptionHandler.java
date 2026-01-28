@@ -1,5 +1,6 @@
 package de.ait.patientcare.handler;
 
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -37,5 +38,13 @@ public class GlobalExceptionHandler {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(OptimisticLockException.class)
+    public ResponseEntity<Map<String, String>> handleOptimisticLock(OptimisticLockException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "The data has been changed by another user. Please refresh the page and try again.");
+        error.put("code", "OPTIMISTIC_LOCK");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }

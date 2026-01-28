@@ -60,6 +60,10 @@ public class Patient {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Version
+    @Column(nullable = false)
+    private Long version = 0L;
+
     @Builder.Default
     private boolean deleted = false;
 }
