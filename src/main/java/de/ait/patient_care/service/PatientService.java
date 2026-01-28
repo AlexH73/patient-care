@@ -1,11 +1,13 @@
 package de.ait.patient_care.service;
 
 
-import de.ait.patient_care.entity.Patient;
-import de.ait.patient_care.enums.BloodType;
-import de.ait.patient_care.enums.Gender;
+
 import de.ait.patient_care.exception.NotFoundException;
-import de.ait.patient_care.repository.PatientRepository;
+
+import de.ait.patientcare.entity.Patient;
+import de.ait.patientcare.entity.enums.BloodType;
+import de.ait.patientcare.entity.enums.Gender;
+import de.ait.patientcare.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
