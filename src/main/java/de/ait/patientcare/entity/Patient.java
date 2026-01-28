@@ -71,6 +71,5 @@ public class Patient {
 
     @Builder.Default
     @JsonIgnore
-    @Column(nullable = false)
     private boolean deleted = false;
 }

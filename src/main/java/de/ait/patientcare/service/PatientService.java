@@ -94,7 +94,16 @@ public class PatientService {
         LocalDate birthBefore = (ageFrom != null) ? today.minusYears(ageFrom) : null;
         LocalDate birthAfter = (ageTo != null) ? today.minusYears(ageTo) : null;
 
-        return patientRepository.search(gender, bloodType, birthBefore, birthAfter);
+        List<Patient> result = patientRepository.search(gender, bloodType, birthBefore, birthAfter);
+
+        if (result.isEmpty()) {
+            log.debug("No patients found for search criteria: gender={}, bloodType={}, ageFrom={}, ageTo={}",
+                    gender, bloodType, ageFrom, ageTo);
+        } else {
+            log.info("Found {} patients for search criteria", result.size());
+        }
+
+        return result;
     }
 
     public Map<String, Object> getStatistics() {
