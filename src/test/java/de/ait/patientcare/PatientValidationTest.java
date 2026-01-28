@@ -1,8 +1,8 @@
-package de.ait.patient_care;
+package de.ait.patientcare;
 
-import de.ait.patient_care.entity.Patient;
-import de.ait.patient_care.enums.BloodType;
-import de.ait.patient_care.enums.Gender;
+import de.ait.patientcare.entity.Patient;
+import de.ait.patientcare.entity.enums.BloodType;
+import de.ait.patientcare.entity.enums.Gender;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

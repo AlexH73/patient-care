@@ -1,4 +1,4 @@
-package de.ait.patient_care.enums;
+package de.ait.patientcare.entity.enums;
 
 public enum Gender {
     MALE,
