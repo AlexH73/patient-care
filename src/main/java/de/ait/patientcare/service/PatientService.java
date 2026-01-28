@@ -48,7 +48,7 @@ public class PatientService {
         log.info("Creating new patient: {} {}",
                 patient.getFirstName(), patient.getLastName());
 
-        // Проверка уникальности номера страховки
+        // Check the uniqueness of the insurance number
         if (patientRepository.existsByInsuranceNumber(patient.getInsuranceNumber())) {
             log.warn("Duplicate insurance number: {}", patient.getInsuranceNumber());
             throw new DataIntegrityViolationException("Insurance number must be unique");

@@ -25,17 +25,17 @@ public interface PatientRepository
 
     boolean existsByInsuranceNumber(String insuranceNumber);
 
-    // Для поиска активных пациентов
+    // To search for active patients
     List<Patient> findByDeletedFalse();
 
-    // Для статистики
+    // For statistics
     long countByDeletedFalse();
     long countByGender(Gender gender);
 
-    // Для поиска пациентов старше определенного возраста
+    // To search for patients over a certain age
     long countByDateOfBirthBefore(LocalDate date);
 
-    // Кастомный метод поиска с фильтрами
+    // Custom search method with filters
     @Query("SELECT p FROM Patient p WHERE p.deleted = false " +
             "AND (:gender IS NULL OR p.gender = :gender) " +
             "AND (:bloodType IS NULL OR p.bloodType = :bloodType) " +
@@ -46,7 +46,7 @@ public interface PatientRepository
                          @Param("birthBefore") LocalDate birthBefore,
                          @Param("birthAfter") LocalDate birthAfter);
 
-    // Альтернативный метод для countOlderThan
+    // Alternative method for countOlderThan
     @Query("SELECT COUNT(p) FROM Patient p WHERE p.deleted = false AND p.dateOfBirth < :date")
     long countOlderThan(@Param("date") LocalDate date);
 }
