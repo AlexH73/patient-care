@@ -60,7 +60,7 @@ public class Patient {
     private BloodType bloodType;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 
@@ -71,5 +71,6 @@ public class Patient {
 
     @Builder.Default
     @JsonIgnore
+    @Column(nullable = false)
     private boolean deleted = false;
 }
