@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="006-add-defaults-and-not-null" author="TetianaAnufriieva">
+
+        <update tableName="patients">
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <where>created_at IS NULL</where>
+        </update>
+
+        <update tableName="patients">
+            <column name="deleted" valueBoolean="false"/>
+            <where>deleted IS NULL</where>
+        </update>
+
+
+        <addNotNullConstraint
+                tableName="patients"
+                columnName="created_at"
+                columnDataType="TIMESTAMP"/>
+
+        <addDefaultValue
+                tableName="patients"
+                columnName="created_at"
+                defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+        <addNotNullConstraint
+                tableName="patients"
+                columnName="deleted"
+                columnDataType="BOOLEAN"/>
+    </changeSet>
+</databaseChangeLog>
