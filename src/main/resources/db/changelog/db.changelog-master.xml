@@ -8,4 +8,5 @@
 
     <include file="db/changelog/001-create-patients-table.xml"/>
     <include file="db/changelog/002-seed-test-data.xml"/>
+    <include file="db/changelog/003-create-seed-data.xml"/>
 </databaseChangeLog>

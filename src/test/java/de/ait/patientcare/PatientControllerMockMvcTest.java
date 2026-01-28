@@ -1,9 +1,9 @@
-package de.ait.patient_care;
+package de.ait.patientcare;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ait.patientcare.entity.Patient;
-import de.ait.patientcare.entity.BloodType;
-import de.ait.patientcare.entity.Gender;
+import de.ait.patientcare.entity.enums.BloodType;
+import de.ait.patientcare.entity.enums.Gender;
 import de.ait.patientcare.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

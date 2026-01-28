@@ -14,8 +14,14 @@
     <groupId>de.ait</groupId>
     <artifactId>PatientCare</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>PatientCare</name>
-    <description>PatientCare</description>
+    <name>Patient Care System</name>
+
+    <description>
+        Backend prototype for medical patient management system.
+        Provides REST API for patient records with validation,
+        search capabilities, and statistical reporting.
+        Built with Spring Boot, H2, Liquibase, and Docker.
+    </description>
 
     <properties>
         <java.version>21</java.version>

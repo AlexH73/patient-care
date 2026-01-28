@@ -1,35 +1,31 @@
 package de.ait.patientcare.controller;
 
-
 import de.ait.patientcare.entity.Patient;
-import de.ait.patientcare.entity.BloodType;
-import de.ait.patientcare.entity.Gender;
-import de.ait.patientcare.repository.PatientRepository;
+import de.ait.patientcare.entity.enums.BloodType;
+import de.ait.patientcare.entity.enums.Gender;
+import de.ait.patientcare.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Tag(name = "Patient Management API")
 @RestController
 @RequestMapping("/api/patients")
+@RequiredArgsConstructor
 @Slf4j
 public class PatientController {
 
-    private final PatientRepository patientRepository;
-
-    public PatientController(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
+    private final PatientService patientService;
 
     @Value("${app.clinic.name:PatientCare Clinic}")
     private String clinicName;
@@ -39,87 +35,67 @@ public class PatientController {
         return ResponseEntity.ok("Welcome to " + clinicName + "!");
     }
 
-    // ---------- GET ALL ----------
-
     @Operation(summary = "Get all patients")
     @GetMapping
     public ResponseEntity<List<Patient>> getAll() {
-        return ResponseEntity.ok(patientRepository.findByDeletedFalse());
+        return ResponseEntity.ok(patientService.getAllPatients());
     }
-
-    // ---------- GET BY ID ----------
 
     @Operation(summary = "Get patient by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Patient> getById(@PathVariable Long id) {
-        return patientRepository.findById(id)
-                .filter(p -> !p.isDeleted())
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            return ResponseEntity.ok(patientService.getPatientById(id));
+        } catch (RuntimeException e) {
+            log.warn("Patient not found with ID: {}", id);
+            return ResponseEntity.notFound().build();
+        }
     }
-
-    // ---------- POST ----------
 
     @Operation(summary = "Create new patient")
     @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody Patient patient) {
+    public ResponseEntity<?> create(@Valid @RequestBody Patient patient) {
         try {
-            Patient saved = patientRepository.save(patient);
-            log.info("Patient created with ID: {}", saved.getId());
+            Patient saved = patientService.createPatient(patient);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (DataIntegrityViolationException e) {
+            log.warn("Patient creation failed (duplicate insurance): {}", e.getMessage());
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Insurance number must be unique"));
         } catch (Exception e) {
             log.warn("Patient creation failed: {}", e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
         }
     }
-
-    // ---------- PUT ----------
 
     @Operation(summary = "Update existing patient by ID")
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @Valid @RequestBody Patient updated) {
-        Optional<Patient> optional = patientRepository.findById(id);
-        if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Patient existing = optional.get();
-
-        existing.setFirstName(updated.getFirstName());
-        existing.setLastName(updated.getLastName());
-        existing.setDateOfBirth(updated.getDateOfBirth());
-        existing.setGender(updated.getGender());
-        existing.setBloodType(updated.getBloodType());
-        existing.setInsuranceNumber(updated.getInsuranceNumber());
-
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Patient updated) {
         try {
-            Patient saved = patientRepository.save(existing);
-            log.info("Patient updated with ID: {}", saved.getId());
-            return ResponseEntity.ok(saved);
+            Patient patient = patientService.updatePatient(id, updated);
+            return ResponseEntity.ok(patient);
+        } catch (RuntimeException e) {
+            log.warn("Patient not found for update: {}", id);
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             log.warn("Patient update failed: {}", e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
         }
     }
-
-    // ---------- DELETE ----------
 
     @Operation(summary = "Soft delete patient by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Optional<Patient> optional = patientRepository.findById(id);
-        if (optional.isEmpty()) {
+        try {
+            patientService.deletePatient(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            log.warn("Patient not found for deletion: {}", id);
             return ResponseEntity.notFound().build();
         }
-
-        Patient patient = optional.get();
-        patient.setDeleted(true);
-        patientRepository.save(patient);
-        log.info("Patient soft-deleted with ID: {}", id);
-        return ResponseEntity.noContent().build();
     }
-
-    // ---------- SEARCH ----------
 
     @Operation(summary = "Search patients by filters")
     @GetMapping("/search")
@@ -127,39 +103,15 @@ public class PatientController {
             @RequestParam(required = false) Gender gender,
             @RequestParam(required = false) BloodType bloodType,
             @RequestParam(required = false) Integer ageFrom,
-            @RequestParam(required = false) Integer ageTo
-    ) {
-        LocalDate today = LocalDate.now();
-        LocalDate birthBefore = (ageTo != null) ? today.minusYears(ageTo) : null;
-        LocalDate birthAfter = (ageFrom != null) ? today.minusYears(ageFrom) : null;
+            @RequestParam(required = false) Integer ageTo) {
 
-        log.info("Patient search with filters: gender={}, bloodType={}, ageFrom={}, ageTo={}",
-                gender, bloodType, ageFrom, ageTo);
-
-        return ResponseEntity.ok(
-                patientRepository.search(gender, bloodType, birthBefore, birthAfter)
-        );
+        List<Patient> patients = patientService.searchPatients(gender, bloodType, ageFrom, ageTo);
+        return ResponseEntity.ok(patients);
     }
-
-    // ---------- STATISTICS ----------
 
     @Operation(summary = "Get patient statistics")
     @GetMapping("/statistics")
-    public ResponseEntity<Object> statistics() {
-        long total = patientRepository.countByDeletedFalse();
-        long male = patientRepository.countByGender(Gender.MALE);
-        long female = patientRepository.countByGender(Gender.FEMALE);
-        long other = patientRepository.countByGender(Gender.OTHER);
-        long olderThan60 = patientRepository.countOlderThan(LocalDate.now().minusYears(60));
-
-        log.info("Statistics requested");
-
-        return ResponseEntity.ok(Map.of(
-                "totalPatients", total,
-                "maleCount", male,
-                "femaleCount", female,
-                "otherCount", other,
-                "olderThan60", olderThan60
-        ));
+    public ResponseEntity<Map<String, Object>> statistics() {
+        return ResponseEntity.ok(patientService.getStatistics());
     }
 }

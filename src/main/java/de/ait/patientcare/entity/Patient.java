@@ -1,5 +1,7 @@
 package de.ait.patientcare.entity;
 
+import de.ait.patientcare.entity.enums.BloodType;
+import de.ait.patientcare.entity.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
