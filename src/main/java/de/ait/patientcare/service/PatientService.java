@@ -1,15 +1,13 @@
 package de.ait.patientcare.service;
 
 import de.ait.patientcare.entity.Patient;
-import de.ait.patientcare.entity.enums.BloodType;
-import de.ait.patientcare.entity.enums.Gender;
+import de.ait.patientcare.enums.BloodType;
+import de.ait.patientcare.enums.Gender;
+import de.ait.patientcare.handler.NotFoundException;
 import de.ait.patientcare.repository.PatientRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -21,98 +19,82 @@ import java.util.Map;
  * Project : PatientCare
  * ----------------------------------------------------------------------------
  */
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PatientService {
 
     private final PatientRepository patientRepository;
 
-    public List<Patient> getAllPatients() {
-        log.info("Fetching all patients");
+    public List<Patient> getAll() {
+        log.debug("Fetching all non-deleted patients");
         return patientRepository.findByDeletedFalse();
     }
 
-    public Patient getPatientById(Long id) {
-        log.info("Fetching patient by ID: {}", id);
+    public Patient getById(Long id) {
+        log.debug("Fetching patient with id={}", id);
+
         return patientRepository.findById(id)
                 .filter(p -> !p.isDeleted())
                 .orElseThrow(() -> {
-                    log.warn("Patient not found with ID: {}", id);
-                    return new RuntimeException("Patient not found");
+                    log.warn("Patient not found with id={}", id);
+                    return new NotFoundException("Patient not found");
+
                 });
     }
 
-    @Transactional
-    public Patient createPatient(Patient patient) {
-        log.info("Creating new patient: {} {}",
-                patient.getFirstName(), patient.getLastName());
-
-        // Check the uniqueness of the insurance number
-        if (patientRepository.existsByInsuranceNumber(patient.getInsuranceNumber())) {
-            log.warn("Duplicate insurance number: {}", patient.getInsuranceNumber());
-            throw new DataIntegrityViolationException("Insurance number must be unique");
-        }
-
-        Patient saved = patientRepository.save(patient);
-        log.info("Patient created successfully with ID: {}", saved.getId());
-        return saved;
-    }
-
-    @Transactional
-    public Patient updatePatient(Long id, Patient patientDetails) {
-        log.info("Updating patient with ID: {}", id);
-
-        Patient patient = getPatientById(id);
-
-        patient.setFirstName(patientDetails.getFirstName());
-        patient.setLastName(patientDetails.getLastName());
-        patient.setDateOfBirth(patientDetails.getDateOfBirth());
-        patient.setGender(patientDetails.getGender());
-        patient.setInsuranceNumber(patientDetails.getInsuranceNumber());
-        patient.setBloodType(patientDetails.getBloodType());
-
-        log.info("Patient updated successfully: ID {}", id);
+    public Patient create(Patient patient) {
+        log.info("Creating patient: {} {}", patient.getFirstName(), patient.getLastName());
         return patientRepository.save(patient);
     }
 
-    @Transactional
-    public void deletePatient(Long id) {
-        log.info("Soft-deleting patient with ID: {}", id);
-        Patient patient = getPatientById(id);
-        patient.setDeleted(true);
-        patientRepository.save(patient);
-        log.info("Patient soft-deleted: ID {}", id);
+    public Patient update(Long id, Patient updated) {
+        log.info("Updating patient with id={}", id);
+
+        if (updated == null) {
+            throw new IllegalArgumentException("Updated patient must not be null");
+        }
+
+        Patient existing = getById(id);
+
+        existing.setFirstName(updated.getFirstName());
+        existing.setLastName(updated.getLastName());
+        existing.setDateOfBirth(updated.getDateOfBirth());
+        existing.setGender(updated.getGender());
+        existing.setBloodType(updated.getBloodType());
+        existing.setInsuranceNumber(updated.getInsuranceNumber());
+
+        return patientRepository.save(existing);
     }
 
-    public List<Patient> searchPatients(Gender gender, BloodType bloodType,
-                                        Integer ageFrom, Integer ageTo) {
-        log.info("Searching patients with filters: gender={}, bloodType={}, ageFrom={}, ageTo={}",
+    public void softDelete(Long id) {
+        log.info("Soft deleting patient with id={}", id);
+        Patient patient = getById(id);
+        patient.setDeleted(true);
+        patientRepository.save(patient);
+    }
+
+    public List<Patient> search(Gender gender, BloodType bloodType, Integer ageFrom, Integer ageTo) {
+        log.debug("Searching patients gender={}, bloodType={}, ageFrom={}, ageTo={}",
                 gender, bloodType, ageFrom, ageTo);
 
         LocalDate today = LocalDate.now();
-        LocalDate birthBefore = (ageFrom != null) ? today.minusYears(ageFrom) : null;
-        LocalDate birthAfter = (ageTo != null) ? today.minusYears(ageTo) : null;
+        LocalDate birthBefore = ageTo != null ? today.minusYears(ageTo) : null;
+        LocalDate birthAfter = ageFrom != null ? today.minusYears(ageFrom) : null;
 
         return patientRepository.search(gender, bloodType, birthBefore, birthAfter);
     }
 
-    public Map<String, Object> getStatistics() {
-        log.info("Getting patient statistics");
-
-        long total = patientRepository.countByDeletedFalse();
-        long male = patientRepository.countByGender(Gender.MALE);
-        long female = patientRepository.countByGender(Gender.FEMALE);
-        long other = patientRepository.countByGender(Gender.OTHER);
-        long olderThan60 = patientRepository.countByDateOfBirthBefore(
-                LocalDate.now().minusYears(60));
+    public Map<String, Object> statistics() {
+        log.info("Generating patient statistics");
 
         return Map.of(
-                "totalPatients", total,
-                "maleCount", male,
-                "femaleCount", female,
-                "otherCount", other,
-                "olderThan60", olderThan60
+                "totalPatients", patientRepository.countByDeletedFalse(),
+                "maleCount", patientRepository.countByGender(Gender.MALE),
+                "femaleCount", patientRepository.countByGender(Gender.FEMALE),
+                "otherCount", patientRepository.countByGender(Gender.OTHER),
+                "olderThan60", patientRepository.countOlderThan(LocalDate.now().minusYears(60))
         );
     }
 }

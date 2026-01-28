@@ -2,8 +2,8 @@ package de.ait.patientcare;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ait.patientcare.entity.Patient;
-import de.ait.patientcare.entity.enums.BloodType;
-import de.ait.patientcare.entity.enums.Gender;
+import de.ait.patientcare.enums.BloodType;
+import de.ait.patientcare.enums.Gender;
 import de.ait.patientcare.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDate;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,5 +63,31 @@ class PatientControllerMockMvcTest {
                         .content(objectMapper.writeValueAsString(invalid)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void createPatient_invalid_shouldReturn400() throws Exception {
+        String json = """
+        {
+          "firstName": "",
+          "lastName": "",
+          "dateOfBirth": "2030-01-01",
+          "gender": "MALE",
+          "insuranceNumber": "",
+          "bloodType": "O_POSITIVE"
+        }
+        """;
+
+        mockMvc.perform(post("/api/patients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void statistics_shouldReturnOk() throws Exception {
+        mockMvc.perform(get("/api/patients/statistics"))
+                .andExpect(status().isOk());
+    }
+
+
 }
 
