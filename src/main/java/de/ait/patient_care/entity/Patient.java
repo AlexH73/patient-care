@@ -1,5 +1,4 @@
 package de.ait.patient_care.entity;
-
 import de.ait.patient_care.enums.BloodType;
 import de.ait.patient_care.enums.Gender;
 
@@ -52,5 +51,9 @@ public class Patient {
     private BloodType bloodType;
 
     @Column(nullable = false)
+    private boolean deleted = false;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }
+

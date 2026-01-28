@@ -53,9 +53,7 @@
             <version>2.3.0</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
+        <dependency> <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
@@ -78,3 +76,5 @@
     </build>
 
 </project>
+
+
