@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @SQLDelete(sql = "UPDATE patients SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
 public class Patient {
@@ -30,6 +31,7 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank(message = "First name is mandatory")
@@ -67,6 +69,7 @@ public class Patient {
     @Version
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Builder.Default
     private Long version = 0L;
 
     @Builder.Default
