@@ -39,9 +39,22 @@ PatientCare/
 │   │   ├── db/changelog/   # Liquibase migrations
 │   │   ├── application.properties
 │   │   └── application-test.properties
-│   └── test/               # Integration and unit tests
+│   └── test/
+│       ├── java/de/ait/patientcare/
+│       │               ├── unit/
+│       │               │   ├── entity/PatientTest.java
+│       │               │   ├── service/PatientServiceTest.java
+│       │               │   └── handler/GlobalExceptionHandlerTest.java
+│       │               └── integration/
+│       │                   ├── repository/PatientRepositoryTest.java
+│       │                   ├── controller/PatientControllerIT.java
+│       │                   └── service/PatientServiceIntegrationTest.java
+│       │   
+│       └── resources/application-test.properties
+│           
 ├── Dockerfile
-└── pom.xml
+├── pom.xml
+└── README.md
 ```
 
 ## 🏗️ Architecture
