@@ -1,4 +1,4 @@
-package de.ait.patientcare;
+package de.ait.patientcare.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.ait.patientcare.entity.Patient;

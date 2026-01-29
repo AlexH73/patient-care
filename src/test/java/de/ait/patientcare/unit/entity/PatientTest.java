@@ -1,4 +1,4 @@
-package de.ait.patientcare.entity;
+package de.ait.patientcare.unit.entity;
 
 import de.ait.patientcare.entity.enums.BloodType;
 import de.ait.patientcare.entity.enums.Gender;

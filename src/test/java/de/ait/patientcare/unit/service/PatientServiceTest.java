@@ -1,9 +1,10 @@
-package de.ait.patientcare.service;
+package de.ait.patientcare.unit.service;
 
 import de.ait.patientcare.entity.Patient;
 import de.ait.patientcare.entity.enums.BloodType;
 import de.ait.patientcare.entity.enums.Gender;
 import de.ait.patientcare.repository.PatientRepository;
+import de.ait.patientcare.service.PatientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,4 +1,4 @@
-package de.ait.patientcare.handler;
+package de.ait.patientcare.unit.handler;
 
 import jakarta.persistence.OptimisticLockException;
 import org.junit.jupiter.api.BeforeEach;
