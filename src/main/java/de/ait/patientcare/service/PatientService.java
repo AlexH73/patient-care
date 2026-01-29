@@ -65,6 +65,16 @@ public class PatientService {
 
         Patient patient = getPatientById(id);
 
+        String newInsuranceNumber = patientDetails.getInsuranceNumber();
+        String currentInsuranceNumber = patient.getInsuranceNumber();
+
+        if (!newInsuranceNumber.equals(currentInsuranceNumber)) {
+            if (patientRepository.existsByInsuranceNumber(newInsuranceNumber)) {
+                log.warn("Duplicate insurance number during update: {}", newInsuranceNumber);
+                throw new DataIntegrityViolationException("Insurance number must be unique");
+            }
+        }
+
         patient.setFirstName(patientDetails.getFirstName());
         patient.setLastName(patientDetails.getLastName());
         patient.setDateOfBirth(patientDetails.getDateOfBirth());
