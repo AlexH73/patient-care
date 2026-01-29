@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(of = {"firstName", "lastName", "insuranceNumber"})
 @SQLDelete(sql = "UPDATE patients SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
 public class Patient {
